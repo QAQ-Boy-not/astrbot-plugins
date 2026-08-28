@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*$py.class
+*.so
+
+# 虚拟环境
+.venv/
+venv/
+env/
+
+# IDE / 编辑器
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Claude Code 本地设置（不属于项目源码）
+.claude/
+
+# 构建产物
+*.zip
+
+# 临时文件
+workflow-summary.md
+*.tmp
+*.bak

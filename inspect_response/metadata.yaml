@@ -1,0 +1,6 @@
+name: inspect_response # 插件唯一识别名
+display_name: inspect_response # 用于展示的名字
+desc: 打印大模型返回的完整原始数据，用于调试
+version: v1.0.0
+author: your_name
+repo: https://github.com/your/repo
