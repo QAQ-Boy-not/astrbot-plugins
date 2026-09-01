@@ -44,7 +44,7 @@ class InfoExtendPlugin(Star):
         except Exception:
             pass
 
-        first_line = f"<system_reminder>User ID: {sender_id}, Nickname: {sender_name}"
+        first_line = f"<system_reminder>[info_extend-v1.3.0] User ID: {sender_id}, Nickname: {sender_name}"
         if is_private:
             second_line = "Session type: 私聊</system_reminder>"
         else:
