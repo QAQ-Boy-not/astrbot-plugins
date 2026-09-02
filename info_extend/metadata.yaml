@@ -1,6 +1,0 @@
-name: info_extend # 插件唯一识别名
-display_name: info_extend # 用于展示的名字
-desc: 把机器人接收到的消息格式化为"用户xx对你说xx"后发送给大模型
-version: v1.0.0 # 插件版本号
-author: your_name # 作者
-repo: https://github.com/your/repo # 仓库地址
