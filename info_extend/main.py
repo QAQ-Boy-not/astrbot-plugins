@@ -15,13 +15,15 @@ class InfoExtendPlugin(Star):
     async def inject_message_context(self, event: AstrMessageEvent, req: ProviderRequest):
         """静默向 extra_user_content_parts 追加用户消息上下文 XML
 
-        输出格式（模仿 napcat）：
-            群聊：<system_reminder>User ID: ..., Nickname: ...
-                      Group name: ...</system_reminder>
+        输出格式：
+            群聊：<system_reminder>User ID: ..., Nickname: ...</system_reminder>
             私聊：<system_reminder>User ID: ..., Nickname: ...
                       Session type: 私聊</system_reminder>
 
-        时间字段不加（AstrBot 系统会自动注入 Current datetime）。
+        说明：
+        - 群聊名称不再注入（AstrBot 通过 session/conversation 隔离不同群，
+          大模型不需要群名来区分上下文）。
+        - 时间字段不加（AstrBot 系统会自动注入 Current datetime）。
         """
         sender_id = event.get_sender_id() or "未知"
         sender_name = event.get_sender_name() or "未知"
@@ -48,7 +50,7 @@ class InfoExtendPlugin(Star):
         if is_private:
             second_line = "Session type: 私聊</system_reminder>"
         else:
-            second_line = f"Group name: {group_name}</system_reminder>"
+            second_line = "</system_reminder>"
 
         context_xml = first_line + "\n" + second_line
 
