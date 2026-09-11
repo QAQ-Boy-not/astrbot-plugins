@@ -1,6 +1,6 @@
-name: inspect_response # 插件唯一识别名
-display_name: inspect_response # 用于展示的名字
-desc: 打印大模型返回的完整原始数据，用于调试
-version: v1.0.0
-author: your_name
-repo: https://github.com/your/repo
+name: inspect_response
+display_name: inspect_response
+desc: 全链路 4 点打印（原始消息 / LLM 请求 / LLM 响应 / 最终输出）
+version: 2.0.0
+author: wangjing
+repo:
