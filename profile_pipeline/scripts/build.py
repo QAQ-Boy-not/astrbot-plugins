@@ -28,7 +28,7 @@ from pathlib import Path
 
 
 DATE_FMT = "%Y%m%d"
-VERSION_PATTERN = re.compile(r"^(\d+\.\d+\.\d+)(?:-(\d{8}))?$")
+VERSION_PATTERN = re.compile(r"^(\d+\.\d+\.\d+)(?:-(\d{8}))?$", re.MULTILINE)
 
 
 def next_version(current: str) -> str:
@@ -65,8 +65,8 @@ def update_metadata(metadata_path: Path, new_version: str) -> None:
         flags=re.MULTILINE,
     )
     if new_content == content:
-        print(f"⚠️  {metadata_path}: 没找到 version 行")
-        return
+        # 内容没变（新值=旧值，或没匹配到）
+        return  # 不报错，安静跳过
     metadata_path.write_text(new_content, encoding="utf-8")
     print(f"✓ {metadata_path}: version → {new_version}")
 
@@ -74,29 +74,15 @@ def update_metadata(metadata_path: Path, new_version: str) -> None:
 def update_main(main_path: Path, new_version: str) -> None:
     """更新 main.py 中 @register 的第四个参数（version 字符串）。"""
     content = main_path.read_text(encoding="utf-8")
-    # 匹配 @register("...", "...", "...", "<version>")
-    # 用更宽松的匹配：第四个引号参数
-    pattern = re.compile(
-        r'(@register\([^)]*?)"[^"]*"\s*\)',
-        re.DOTALL,
-    )
-    match = pattern.search(content)
-    if not match:
-        print(f"⚠️  {main_path}: 没找到 @register 装饰器")
-        return
-    # 替换最后一个参数
+    # 匹配 @register(...) 里的最后一个引号字符串
+    pattern = re.compile(r'(@register\([^)]*?)"[^"]*"\s*\)', re.DOTALL)
     new_content = pattern.sub(
-        lambda m: re.sub(
-            r'"[^"]*"\s*\)$',
-            f'"{new_version}")',
-            m.group(0),
-            count=1,
-        ),
+        lambda m: re.sub(r'"[^"]*"\s*\)$', f'"{new_version}")', m.group(0), count=1),
         content,
         count=1,
     )
     if new_content == content:
-        print(f"⚠️  {main_path}: @register 替换失败")
+        # 没匹配到，或新值=旧值
         return
     main_path.write_text(new_content, encoding="utf-8")
     print(f"✓ {main_path}: @register version → {new_version}")
@@ -173,7 +159,7 @@ def main():
     content = metadata_path.read_text(encoding="utf-8")
     match = re.search(r"^version:\s*(\S+)", content, re.MULTILINE)
     if match:
-        current_version = match.group(1)
+        current_version = match.group(1).strip()  # 只取版本号（不含 "version:" 前缀）
 
     # 计算新版本
     if args.no_bump:
