@@ -4,7 +4,7 @@ import sqlite3
 from pathlib import Path
 
 
-DB_PATH = Path("/AstrBot/data/profile_data.db")
+DB_PATH = Path("/AstrBot/data/plugin_data/profile_generator/profile.db")
 
 
 SCHEMA = [
@@ -73,8 +73,16 @@ def get_conn():
 
 
 def init_db():
-    """建表 + 索引。"""
+    """建表 + 索引。如有旧位置 DB，自动迁移。"""
     DB_PATH.parent.mkdir(parents=True, exist_ok=True)
+
+    # 迁移：从旧位置 /AstrBot/data/profile_data.db 移动过来
+    old_path = Path("/AstrBot/data/profile_data.db")
+    if old_path.exists() and not DB_PATH.exists():
+        import shutil
+        shutil.move(str(old_path), str(DB_PATH))
+        print(f"[profile_generator] 迁移旧 DB: {old_path} → {DB_PATH}")
+
     with get_conn() as conn:
         for stmt in SCHEMA:
             conn.execute(stmt)
