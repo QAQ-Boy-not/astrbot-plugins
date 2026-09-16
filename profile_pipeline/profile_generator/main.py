@@ -108,7 +108,7 @@ def extract_message(msg):
     )
 
 
-@register("profile_generator", "anonymous", "捕获群里所有消息到自有数据库（个人学习项目）", "0.2.0-20260916-100129")
+@register("profile_generator", "anonymous", "捕获群里所有消息到自有数据库（个人学习项目）", "0.2.0-20260916-101611")
 class ProfileGenerator(Star):
     def __init__(self, context: Context):
         super().__init__(context)

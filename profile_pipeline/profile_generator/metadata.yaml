@@ -1,6 +1,6 @@
 name: profile_generator
 display_name: profile_generator
 desc: 捕获群里所有消息到自有数据库（个人学习项目）
-version: 0.2.0-20260916-100129
+version: 0.2.0-20260916-101611
 author: anonymous
 repo:
