@@ -4,7 +4,7 @@
 不做画像提取、不做上下文注入。
 
 钩子：event_message_type(EventMessageType.ALL)
-DB：  /AstrBot/data/profile_data.db
+DB：  /AstrBot/data/plugin_data/profile_generator/profile.db
 """
 
 import json
@@ -12,8 +12,13 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
-# 让 shared 能 import
-sys.path.insert(0, str(Path(__file__).parent.parent))
+# shared/ 是 plugin 根目录的同级子目录
+# AstrBot 把 plugin 解压到 data.plugins.<name>/，
+# 整个 plugin 是 package，但 shared 应该是 data.plugins.<name>.shared
+# AstrBot 的 __import__ 把 plugin 根目录当成 package 入口，
+# 但相对 import 在某些情况下不可靠 → 用绝对 import + sys.path hack
+# 把 plugin 根目录加进去，让 `from shared.db` 能工作
+sys.path.insert(0, str(Path(__file__).parent))
 
 from astrbot.api.event import filter, AstrMessageEvent
 from astrbot.api.star import Context, Star, register
@@ -108,7 +113,7 @@ def extract_message(msg):
     )
 
 
-@register("profile_generator", "anonymous", "捕获群里所有消息到自有数据库（个人学习项目）", "0.2.0-20260916-101611")
+@register("profile_generator", "anonymous", "捕获群里所有消息到自有数据库（个人学习项目）", "0.2.0-20260916-103218")
 class ProfileGenerator(Star):
     def __init__(self, context: Context):
         super().__init__(context)

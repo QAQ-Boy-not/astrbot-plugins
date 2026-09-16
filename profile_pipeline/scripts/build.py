@@ -109,7 +109,12 @@ def build_zip(plugin_dir: Path, output_zip: Path) -> None:
                 continue
             if "__pycache__" in path.parts:
                 continue
-            arcname = path.relative_to(pack_root)
+            # metadata.yaml 必须拍平到 zip 根目录（AstrBot 约定）
+            if path.name == "metadata.yaml":
+                arcname = "metadata.yaml"
+            else:
+                # 其他文件保留子目录结构（如 main.py 放子目录里）
+                arcname = path.relative_to(plugin_dir)
             zf.write(path, arcname)
             print(f"  + {arcname}")
 
