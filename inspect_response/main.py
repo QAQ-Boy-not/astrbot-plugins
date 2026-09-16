@@ -18,7 +18,7 @@ from astrbot.api.provider import ProviderRequest, LLMResponse
 from astrbot.core.star.filter.event_message_type import EventMessageType
 
 
-@register("inspect_response", "wangjing", "全链路 4 点打印（原始消息 / LLM 请求 / LLM 响应 / 最终输出）", "2.0.0")
+@register("inspect_response", "wangjing", "全链路 4 点打印（原始消息 / LLM 请求 / LLM 响应 / 最终输出）", "2.0.0-20260916-104543")
 class InspectResponsePlugin(Star):
     def __init__(self, context: Context):
         super().__init__(context)
